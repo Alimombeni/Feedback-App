@@ -1,8 +1,8 @@
-import {useState} from "react";
-
+import {useContext , useState} from "react";
+import FeedbackContext from "../Context/FeedbackContext";
 import Card from "./shared/Card";
 import RatingSelect from "./RatingSelect";
-function FeedbackForm ( {handleAdd} ) {
+function FeedbackForm () {
     //textSTATE for keep input user character
     const [text, setText]=useState('')
     //ratingSTATE for keep rating 1 to 10
@@ -11,7 +11,7 @@ function FeedbackForm ( {handleAdd} ) {
     const [btnDisabled, setBtnDisabled]=useState(true)
     //messageSTATE for showing text message 10 character checking
     const [message, setMessage]=useState('')
-
+    const {addFeedback} = useContext(FeedbackContext)
     const handleTextChange = (e) => {
         //when the input is empty
         if (text === ''){
@@ -35,7 +35,7 @@ function FeedbackForm ( {handleAdd} ) {
                 text,
                 rating,
             }
-            handleAdd(newFeedback)
+            addFeedback(newFeedback)
             setText('')
         }
     }
