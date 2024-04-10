@@ -1,4 +1,4 @@
-import {useContext , useState} from "react";
+import {useContext , useState ,useEffect} from "react";
 import FeedbackContext from "../Context/FeedbackContext";
 import Card from "./shared/Card";
 import RatingSelect from "./RatingSelect";
@@ -11,7 +11,19 @@ function FeedbackForm () {
     const [btnDisabled, setBtnDisabled]=useState(true)
     //messageSTATE for showing text message 10 character checking
     const [message, setMessage]=useState('')
-    const {addFeedback} = useContext(FeedbackContext)
+    //-----------------------context calling here
+    const {addFeedback , feedbackEdit ,  updateFeedback } = useContext(FeedbackContext)
+//we use useEffect when click on edit icon in form and boolean change to true
+        // when click on edite item change btn and text and rating for update set state
+    useEffect(() => {
+        if (feedbackEdit.edit === true) {
+            setBtnDisabled(false)
+            setText(feedbackEdit.item.text)
+            setRating(feedbackEdit.item.rating)
+        }
+    }, [feedbackEdit]);
+
+
     const handleTextChange = (e) => {
         //when the input is empty
         if (text === ''){
@@ -35,7 +47,12 @@ function FeedbackForm () {
                 text,
                 rating,
             }
+
+            if (feedbackEdit.edit === true){
+                updateFeedback(feedbackEdit.item.id , newFeedback)
+            }else {
             addFeedback(newFeedback)
+            }
             setText('')
         }
     }
